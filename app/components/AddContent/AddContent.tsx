@@ -5,8 +5,8 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-interface AddPostProps {
-  onAddPost: (title: string, description: string) => void;
+interface AddContentProps {
+  onAddContent: (title: string, description: string) => void;
 }
 type RootStackParamList = {
 
@@ -14,68 +14,68 @@ type RootStackParamList = {
 };
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const AddPost: React.FC<AddPostProps> = ({ onAddPost }) => {
+const AddContent: React.FC<AddContentProps> = ({ onAddContent }) => {
   const route = useRoute();
-  const navigation = useNavigation<NavigationProp>();
-  const { postId } = route.params as { postId?: string };
+  const navigation = useNavigation<NavigationProp>(); 
+  const { contentId } = route.params as { contentId?: string };
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    if (postId) {
-      const fetchPost = async () => {
+    if (contentId) {
+      const fetchContent = async () => {
         try {
-          const response = await axios.get(`http://10.0.2.2:3000/api/posts/${postId}`);
+          const response = await axios.get(`http://10.0.2.2:3000/api/posts/${contentId}`);
           setTitle(response.data.title);
           setDescription(response.data.description);
         } catch (error) {
-          console.error('Erro ao carregar o post:', error);
+          console.error('Erro ao carregar o conteúdo:', error);
         }
       };
-      fetchPost();
+      fetchContent();
     }
-  }, [postId]);
+  }, [contentId]);
 
   const handleSubmit = async () => {
     const toSave = { title, description };
     const token = await AsyncStorage.getItem('token');
 
     try {
-      if (postId) {
-        await axios.put(`http://10.0.2.2:3000/api/posts/${postId}`, toSave, {
+      if (contentId) {
+        await axios.put(`http://10.0.2.2:3000/api/posts/${contentId}`, toSave, {
           headers: {
             Authorization: token,
           },
         });
-        Alert.alert("Sucesso", "Post atualizado com sucesso!");
+        Alert.alert("Sucesso", "Conteúdo atualizado com sucesso!");
       } else {
         await axios.post('http://10.0.2.2:3000/api/posts', toSave, {
           headers: {
             Authorization: token,
           },
         });
-        Alert.alert("Sucesso", "Post criado com sucesso!");
+        Alert.alert("Sucesso", "Conteúdo criado com sucesso!");
       }
 
-      onAddPost(title, description);
+      onAddContent(title, description);
       
       navigation.navigate("Admin");
     
     } catch (error) {
-      console.error('Erro ao salvar o post:', error);
-      Alert.alert("Erro", "Erro ao salvar o post.");
+      console.error('Erro ao salvar o conteúdo:', error);
+      Alert.alert("Erro", "Erro ao salvar o conteúdo.");
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Título da Postagem:</Text>
+        <Text style={styles.label}>Título do conteúdo:</Text>
         <TextInput
           style={styles.input}
           value={title}
           onChangeText={setTitle}
-          placeholder="Título da Postagem aqui..."
+          placeholder="Título do conteúdo aqui..."
           placeholderTextColor="#aaa"
         />
       </View>
@@ -85,13 +85,13 @@ const AddPost: React.FC<AddPostProps> = ({ onAddPost }) => {
           style={[styles.input, styles.textArea]}
           value={description}
           onChangeText={setDescription}
-          placeholder="Conteúdo da Postagem aqui..."
+          placeholder="Descrição aqui..."
           placeholderTextColor="#aaa"
           multiline
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>{postId ? "Atualizar" : "Enviar"}</Text>
+        <Text style={styles.buttonText}>{contentId ? "Atualizar" : "Enviar"}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddPost;
+export default AddContent;

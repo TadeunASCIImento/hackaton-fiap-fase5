@@ -14,19 +14,19 @@ import { useNavigation } from '@react-navigation/native';
 
 
 type RootStackParamList = {
-    AddPost: { postId: string | undefined};               
+    AddContent: { contentId: string | undefined};               
 };
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-interface Post {
+interface Content {
   id: string;
   title: string;
   description: string;
 }
 
-const AdminPostList: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+const AdminContentList: React.FC = () => {
+  const [contents, setContent] = useState<Content[]>([]);
   const [token, setToken] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp>();
 
@@ -38,21 +38,21 @@ const AdminPostList: React.FC = () => {
 
     fetchToken();
 
-    const fetchPosts = async () => {
+    const fetchContent = async () => {
       try {
         const response = await axios.get("http://10.0.2.2:3000/api/posts?page=1&limit=20");
-        setPosts(response.data.data);
+        setContent(response.data.data);
       } catch (error) {
-        console.error("Erro ao buscar os posts:", error);
-        Alert.alert("Erro", "Erro ao buscar os posts.");
+        console.error("Erro ao buscar conteúdos:", error);
+        Alert.alert("Erro", "Erro ao buscar conteúdos.");
       }
     };
 
-    fetchPosts();
+    fetchContent();
   }, []);
 
-  const handleDelete = async (postId: string) => {
-    Alert.alert("Confirmação", "Deseja realmente excluir este post?", [
+  const handleDelete = async (contentId: string) => {
+    Alert.alert("Confirmação", "Deseja realmente excluir este conteúdo?", [
       {
         text: "Cancelar",
         style: "cancel",
@@ -61,29 +61,29 @@ const AdminPostList: React.FC = () => {
         text: "Excluir",
         onPress: async () => {
           try {
-            await axios.delete(`http://10.0.2.2:3000/api/posts/${postId}`, {
+            await axios.delete(`http://10.0.2.2:3000/api/posts/${contentId}`, {
               headers: {
                 Authorization: token,
               },
             });
-            Alert.alert("Sucesso", "Post excluído com sucesso!");
-            setPosts(posts.filter((post) => post.id !== postId));
+            Alert.alert("Sucesso", "Conteúdo excluído com sucesso!");
+            setContent(contents.filter((content) => content.id !== contentId));
           } catch (error) {
-            console.error("Erro ao excluir o post:", error);
-            Alert.alert("Erro", "Erro ao excluir o post.");
+            console.error("Erro ao excluir o conteúdo:", error);
+            Alert.alert("Erro", "Erro ao excluir o contéudo.");
           }
         },
       },
     ]);
   };
 
-  const renderPost = ({ item }: { item: Post }) => (
-    <View style={styles.postItem}>
-      <Text style={styles.postTitle}>{item.title}</Text>
+  const renderContent = ({ item }: { item: Content }) => (
+    <View style={styles.contentItem}>
+      <Text style={styles.contentTitle}>{item.title}</Text>
       <View style={styles.actions}>
         <TouchableOpacity
           style={[styles.button, styles.editButton]}
-          onPress={() => navigation.navigate("AddPost", { postId: item.id })}
+          onPress={() => navigation.navigate("AddContent", { contentId: item.id })}
         >
           <Text style={styles.buttonText}>Editar</Text>
         </TouchableOpacity>
@@ -99,24 +99,24 @@ const AdminPostList: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Lista de Postagens</Text>
+      <Text style={styles.header}>Lista de Conteúdos</Text>
       <TouchableOpacity
         style={styles.createButton}
-        onPress={() => navigation.navigate("AddPost", {postId: undefined})}
+        onPress={() => navigation.navigate("AddContent", {contentId: undefined})}
       >
-        <Text style={styles.createButtonText}>+ Nova Postagem</Text>
+        <Text style={styles.createButtonText}>+ Novo conteúdo</Text>
       </TouchableOpacity>
       <FlatList
-        data={posts}
-        renderItem={renderPost}
+        data={contents}
+        renderItem={renderContent}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text style={styles.emptyMessage}>Nenhuma postagem encontrada.</Text>}
+        ListEmptyComponent={<Text style={styles.emptyMessage}>Nenhum conteúdo encontrado.</Text>}
       />
     </View>
   );
 };
 
-export default AdminPostList;
+export default AdminContentList;
 
 const styles = StyleSheet.create({
   container: {
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-  postItem: {
+  contentItem: {
     padding: 16,
     backgroundColor: "#f9f9f9",
     borderRadius: 8,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  postTitle: {
+  contentTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,

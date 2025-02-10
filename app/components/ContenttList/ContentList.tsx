@@ -14,72 +14,72 @@ import { useNavigation } from '@react-navigation/native';
 
 
 type RootStackParamList = {
-  PostDetails: { postId: string };
+  ContentDetails: { contentId: string };
   Login: undefined;               
 };
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-interface Post {
+interface Content {
   id: string;
   title: string;
   description: string;
 }
 
-const PostListSearchContainer: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+const ContentListSearchContainer: React.FC = () => {
+  const [contents, setContents] = useState<Content[]>([]);
+  const [filteredContents, setFilteredContents] = useState<Content[]>([]);
   const [keyword, setKeyword] = useState('');
   const [error, setError] = useState('');
   const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchContents = async () => {
       try {
         const response = await axios.get('http://10.0.2.2:3000/api/posts?page=1&limit=20');
-        setPosts(response.data.data);
-        setFilteredPosts(response.data.data);
+        setContents(response.data.data);
+        setFilteredContents(response.data.data);
       } catch (err) {
-        console.error('Erro ao buscar os posts:', err);
-        setError('Erro ao buscar os posts.');
+        console.error('Erro ao buscar conteúdos:', err);
+        setError('Erro ao buscar conteúdos.');
       }
     };
-    fetchPosts();
+    fetchContents();
   }, []);
 
   useEffect(() => {
-    const searchPostsByKeyword = async () => {
+    const searchContentsByKeyword = async () => {
       setError('');
       try {
         if (keyword) {
           const response = await axios.get(
             `http://10.0.2.2:3000/api/posts/search?keyword=${keyword}`
           );
-          setFilteredPosts(response.data);
+          setFilteredContents(response.data);
         }
       } catch (err) {
-        setError('Ocorreu um erro ao buscar os posts.');
+        setError('Ocorreu um erro ao buscar conteúdos.');
       }
     };
 
-    searchPostsByKeyword();
-  }, [keyword, posts]);
+    searchContentsByKeyword();
+  }, [keyword, contents]);
 
-  const handlePostClick = (postId: string) => {
-    navigation.navigate('PostDetails', { postId });
+  const handleContentClick = (contentId: string) => {
+    navigation.navigate('ContentDetails', { contentId });
   };
 
   const handleLoginClick = () => {
     navigation.navigate('Login');
   };
 
-  const renderPost = ({ item }: { item: Post }) => (
+  const renderContent = ({ item }: { item: Content }) => (
     <TouchableOpacity
-      style={styles.postItem}
-      onPress={() => handlePostClick(item.id)}
+      style={styles.contentItem}
+      onPress={() => handleContentClick(item.id)}
     >
-      <Text style={styles.postTitle}>{item.title}</Text>
-      <Text style={styles.postDescription}>
+      <Text style={styles.contentTitle}>{item.title}</Text>
+      <Text style={styles.contentDescription}>
         {item.description.substring(0, 100).concat('...')}
       </Text>
     </TouchableOpacity>
@@ -97,20 +97,20 @@ const PostListSearchContainer: React.FC = () => {
         onChangeText={setKeyword}
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      {filteredPosts.length > 0 ? (
+      {filteredContents.length > 0 ? (
         <FlatList
-          data={filteredPosts}
-          renderItem={renderPost}
+          data={filteredContents}
+          renderItem={renderContent}
           keyExtractor={(item) => item.id}
         />
       ) : (
-        <Text style={styles.noPosts}>Nenhum post encontrado.</Text>
+        <Text style={styles.noContents}>Nenhum conteúdo encontrado.</Text>
       )}
     </View>
   );
 };
 
-export default PostListSearchContainer;
+export default ContentListSearchContainer;
 
 const styles = StyleSheet.create({
   container: {
@@ -135,18 +135,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginBottom: 16,
   },
-  postItem: {
+  contentItem: {
     padding: 16,
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
     marginBottom: 16,
   },
-  postTitle: {
+  contentTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
   },
-  postDescription: {
+  contentDescription: {
     fontSize: 14,
     color: '#555',
   },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 16,
   },
-  noPosts: {
+  noContents: {
     fontSize: 16,
     color: '#555',
     textAlign: 'center',

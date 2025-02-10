@@ -1,20 +1,21 @@
-# Aplicação de Postagens - Mobile (React Native)
+# Aplicação de Conteúdos - Mobile (React Native)
 
 
 ## Apresentação Gravada do funcinamento da aplicação
 [Assista a apresentação]()
 
 ## Descrição
-Esta aplicação mobile de postagens foi desenvolvida utilizando React Native e permite a criação, visualização, leitura e gerenciamento de postagens. Professores têm permissões de gerenciamento completo das postagens, enquanto os alunos podem apenas visualizar e ler as postagens publicadas.
+Esta aplicação mobile de postagens foi desenvolvida utilizando React Native e permite a criação, visualização, leitura e gerenciamento de conteúdos postados por professores de escolas públicas. 
+Professores têm permissões de gerenciamento completo dos conteúdos, enquanto os alunos podem apenas visualizar e ler os conteúdos publicados.
 
 ### Funcionalidades
 - **Alunos**:
-  - Visualizam uma lista de postagens na página principal.
-  - Podem ler uma postagem específica ao clicar no título ou conteúdo.
+  - Visualizam uma lista de conteúdos na página principal.
+  - Podem ler um conteúdo específico ao clicar no título ou conteúdo.
   
 - **Professores**:
-  - Acessam uma área administrativa para gerenciar as postagens (login requerido).
-  - Podem criar, editar, listar e excluir postagens.
+  - Acessam uma área administrativa para gerenciar os conteúdos (login requerido).
+  - Podem criar, editar, listar e excluir conteúdos.
 
 ## Requisitos
 Para executar a aplicação localmente, você precisará ter o seguinte instalado:
@@ -25,7 +26,7 @@ Para executar a aplicação localmente, você precisará ter o seguinte instalad
 
 1. **Clone o repositório**:
     ```bash
-    git clone https://github.com/TadeunASCIImento/tech-challenge-fiap-fase4.git
+    git clone https://github.com/TadeunASCIImento/hackaton-fiap-fase5.git
     ```
 
 2. **Acesse o diretório do projeto**:
@@ -56,16 +57,16 @@ Para executar a aplicação localmente, você precisará ter o seguinte instalad
 ## Fluxo da Aplicação
 
 ### Visão dos Alunos:
-- Os alunos acessam a página principal e veem a lista de postagens.
-- Ao clicar em uma postagem, eles podem visualizar o conteúdo completo da postagem.
+- Os alunos acessam a página principal e veem a lista de conteúdos.
+- Ao clicar em um conteúdo, eles podem visualizar o conteúdo completo.
 
 ### Visão dos Professores (Área Administrativa):
 - Os professores fazem login para acessar a área administrativa.
 - Na área administrativa, os professores podem:
-  - Criar novas postagens.
-  - Editar postagens existentes.
-  - Listar todas as postagens criadas.
-  - Excluir postagens.
+  - Criar novos conteúdos.
+  - Editar conteúdos existentes.
+  - Listar todos os conteúdos criados.
+  - Excluir conteúdos.
 
 ## Tecnologias Utilizadas
 - **React Native**: Biblioteca JavaScript para construção da interface do usuário.
@@ -84,7 +85,7 @@ Para executar a aplicação localmente, você precisará ter o seguinte instalad
 ```bash
 ├── app
 │   ├── components        # Componentes da aplicação   
-│   ├── index.tsx           # Componente principal
+│   ├── index.tsx         # Componente principal
 ├── .gitignore            # Arquivos e pastas a serem ignorados no Git
 ├── package.json          # Dependências e scripts do projeto
 └── README.md             # Documentação do projeto

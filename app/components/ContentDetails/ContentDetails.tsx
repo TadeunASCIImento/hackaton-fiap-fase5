@@ -3,32 +3,32 @@ import { View, Text, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 
-interface Post {
+interface Content {
   id: string;
   title: string;
   description: string;
 }
 
-const PostDetail: React.FC = () => {
+const ContentDetail: React.FC = () => {
   const route = useRoute();
-  const { postId } = route.params as { postId: string };
-  const [post, setPost] = useState<Post | null>(null);
+  const { contentId } = route.params as { contentId: string };
+  const [content, setContent] = useState<Content | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchPostDetail = async () => {
+    const fetchContentDetail = async () => {
       try {
-        const response = await axios.get(`http://10.0.2.2:3000/api/posts/${postId}`);
-        setPost(response.data);
+        const response = await axios.get(`http://10.0.2.2:3000/api/posts/${contentId}`);
+        setContent(response.data);
       } catch (err) {
-        console.error("Erro ao buscar os detalhes do post:", err);
-        setError("Erro ao buscar os detalhes do post.");
-        Alert.alert("Erro", "Não foi possível carregar os detalhes do post.");
+        console.error("Erro ao buscar os detalhes do Conteúdo:", err);
+        setError("Erro ao buscar os detalhes do Conteúdo.");
+        Alert.alert("Erro", "Não foi possível carregar os detalhes do conteúdo.");
       }
     };
 
-    fetchPostDetail();
-  }, [postId]);
+    fetchContentDetail();
+  }, [contentId]);
 
   if (error) {
     return (
@@ -38,7 +38,7 @@ const PostDetail: React.FC = () => {
     );
   }
 
-  if (!post) {
+  if (!content) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#007BFF" />
@@ -49,8 +49,8 @@ const PostDetail: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{post.title}</Text>
-      <Text style={styles.description}>{post.description}</Text>
+      <Text style={styles.title}>{content.title}</Text>
+      <Text style={styles.description}>{content.description}</Text>
     </View>
   );
 };
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostDetail;
+export default ContentDetail;
