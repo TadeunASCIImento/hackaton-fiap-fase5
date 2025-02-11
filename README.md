@@ -2,7 +2,7 @@
 
 
 ## Apresentação Gravada do funcinamento da aplicação
-[Assista a apresentação]()
+[Assista a apresentação](https://drive.google.com/file/d/1N_BlTfZhVLntb6ltIM3KyHkR8DgOCvCF/view?usp=sharing)
 
 ## Descrição
 Esta aplicação mobile de postagens foi desenvolvida utilizando React Native e permite a criação, visualização, leitura e gerenciamento de conteúdos postados por professores de escolas públicas. 
